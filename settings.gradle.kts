@@ -11,7 +11,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "template"
+rootProject.name = "NoArchive"
 
 enableFeaturePreview("VERSION_CATALOGS")
 

@@ -10,13 +10,10 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-group = "template"
+group = "io.github.jamalam360"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    // You can remove this if you're not testing locally-installed KordEx builds
-    mavenLocal()
-
     maven {
         name = "Kotlin Discord"
         url = uri("https://maven.kotlindiscord.com/repository/maven-public/")
@@ -33,11 +30,12 @@ dependencies {
     implementation(libs.groovy)
     implementation(libs.logback)
     implementation(libs.logging)
+    implementation("org.litote.kmongo:kmongo:4.3.0")
 }
 
 application {
     // This is deprecated, but the Shadow plugin requires it
-    mainClassName = "template.AppKt"
+    mainClassName = "io.github.jamalam360.NoArchiveKt"
 }
 
 gitHooks {
@@ -47,8 +45,7 @@ gitHooks {
 }
 
 tasks.withType<KotlinCompile> {
-    // Current LTS version of Java
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "16"
 
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
@@ -56,15 +53,14 @@ tasks.withType<KotlinCompile> {
 tasks.jar {
     manifest {
         attributes(
-            "Main-Class" to "template.AppKt"
+            "Main-Class" to "io.github.jamalam360.NoArchiveKt"
         )
     }
 }
 
 java {
-    // Current LTS version of Java
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 detekt {
