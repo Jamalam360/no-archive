@@ -1,11 +1,16 @@
 package io.github.jamalam360.extensions
 
+import com.kotlindiscord.kord.extensions.checks.hasPermission
 import com.kotlindiscord.kord.extensions.commands.parser.Arguments
 import com.kotlindiscord.kord.extensions.commands.slash.AutoAckType
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import dev.kord.common.annotation.KordPreview
 import dev.kord.common.entity.ChannelType
+import dev.kord.common.entity.Permission
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.entity.channel.MessageChannel
+import dev.kord.core.event.channel.thread.ThreadChannelCreateEvent
+import dev.kord.core.event.channel.thread.ThreadChannelDeleteEvent
 import dev.kord.core.event.channel.thread.ThreadUpdateEvent
 import io.github.jamalam360.Database
 import io.github.jamalam360.TEST_SERVER_ID
@@ -16,6 +21,40 @@ class NoArchiveExtension : Extension() {
     override val name = "noarchive"
 
     override suspend fun setup() {
+        slashCommand(::Arguments) {
+            name = "autonoarchive"
+            description = "Set threads in this server to automatically be added to the NoArchive database"
+            autoAck = AutoAckType.EPHEMERAL
+            guild(TEST_SERVER_ID)
+
+            check {
+                hasPermission(Permission.Administrator)
+            }
+
+            action {
+                val guildId: Snowflake = this.guild!!.id
+
+                if (!db.hasServerConfig(guildId)) {
+                    db.createServerConfig(guildId)
+                    println(2)
+                }
+
+                val response: String = if (db.getServerConfig(guildId)!!.autoPrevent) {
+                    db.updateServerConfig(guildId, false)
+                    "Successfully turned off auto-no-archiving for this server"
+                } else if (!db.getServerConfig(guildId)!!.autoPrevent) {
+                    db.updateServerConfig(guildId, true)
+                    "Successfully turned on auto-no-archiving for this server"
+                } else {
+                    "An unexpected error occurred"
+                }
+
+                ephemeralFollowUp {
+                    content = response
+                }
+            }
+        }
+
         slashCommand(::Arguments) {
             name = "preventarchive"
             description = "Prevent this thread from archiving"
@@ -68,6 +107,28 @@ class NoArchiveExtension : Extension() {
             action {
                 if (db.hasThread(event.channel.id) && event.channel.isArchived) {
                     event.channel.createMessage("Prevent Archive").delete()
+                }
+            }
+        }
+
+        event<ThreadChannelCreateEvent> {
+            action {
+                val guildId: Snowflake = this.event.channel.guildId
+
+                if (!db.hasServerConfig(guildId)) {
+                    db.createServerConfig(guildId)
+                }
+
+                if (db.getServerConfig(guildId)!!.autoPrevent) {
+                    db.addThread(this.event.channel.id)
+                }
+            }
+        }
+
+        event<ThreadChannelDeleteEvent> {
+            action {
+                if (db.hasThread(this.event.old!!.id)) {
+                    db.removeThread(this.event.old!!.id)
                 }
             }
         }
