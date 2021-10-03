@@ -13,7 +13,6 @@ import dev.kord.core.event.channel.thread.ThreadChannelCreateEvent
 import dev.kord.core.event.channel.thread.ThreadChannelDeleteEvent
 import dev.kord.core.event.channel.thread.ThreadUpdateEvent
 import io.github.jamalam360.Database
-import io.github.jamalam360.TEST_SERVER_ID
 
 @OptIn(KordPreview::class)
 class NoArchiveExtension : Extension() {
@@ -26,7 +25,7 @@ class NoArchiveExtension : Extension() {
             name = "autonoarchive"
             description = "Set threads in this server to automatically be added to the NoArchive database"
             autoAck = AutoAckType.EPHEMERAL
-            guild(TEST_SERVER_ID)
+            // guild(TEST_SERVER_ID)
 
             check {
                 hasPermission(Permission.Administrator)
@@ -59,7 +58,7 @@ class NoArchiveExtension : Extension() {
             name = "preventarchive"
             description = "Prevent this thread from archiving"
             autoAck = AutoAckType.EPHEMERAL
-            guild(TEST_SERVER_ID)
+            // guild(TEST_SERVER_ID)
 
             action {
                 val response: String = if (!db.hasThread(this.channel.id) && isThread(this.channel)) {
@@ -83,7 +82,7 @@ class NoArchiveExtension : Extension() {
             name = "allowarchive"
             description = "Allow this thread to archive again"
             autoAck = AutoAckType.EPHEMERAL
-            guild(TEST_SERVER_ID)
+            // guild(TEST_SERVER_ID)
 
             action {
                 val response: String = if (db.hasThread(this.channel.id) && isThread(this.channel)) {
