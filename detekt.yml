@@ -1,5 +1,5 @@
 build:
-  maxIssues: 10000
+  maxIssues: 0
   excludeCorrectable: false
   weights:
   # complexity: 2
@@ -9,7 +9,6 @@ build:
 
 config:
   validation: true
-  # when writing own rules with new properties, exclude the property path e.g.: 'my_rule_set,.*>.*>[my_property]'
   excludes: ''
 
 processors:
@@ -262,7 +261,7 @@ formatting:
     continuationIndentSize: 4
   MaximumLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 200
   ModifierOrdering:
     active: true
     autoCorrect: true
@@ -575,7 +574,7 @@ style:
     active: true
   MaxLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 200
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false

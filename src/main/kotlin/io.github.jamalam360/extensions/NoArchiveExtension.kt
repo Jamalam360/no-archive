@@ -19,6 +19,7 @@ import io.github.jamalam360.TEST_SERVER_ID
 class NoArchiveExtension : Extension() {
     private val db = Database()
     override val name = "noarchive"
+    val error = "An unexpected error occurred"
 
     override suspend fun setup() {
         slashCommand(::Arguments) {
@@ -36,7 +37,6 @@ class NoArchiveExtension : Extension() {
 
                 if (!db.hasServerConfig(guildId)) {
                     db.createServerConfig(guildId)
-                    println(2)
                 }
 
                 val response: String = if (db.getServerConfig(guildId)!!.autoPrevent) {
@@ -46,7 +46,7 @@ class NoArchiveExtension : Extension() {
                     db.updateServerConfig(guildId, true)
                     "Successfully turned on auto-no-archiving for this server"
                 } else {
-                    "An unexpected error occurred"
+                    error
                 }
 
                 ephemeralFollowUp {
@@ -70,7 +70,7 @@ class NoArchiveExtension : Extension() {
                 } else if (!isThread(this.channel)) {
                     "This command is only usable in a thread"
                 } else {
-                    "An unexpected error occurred"
+                    error
                 }
 
                 ephemeralFollowUp {
@@ -94,7 +94,7 @@ class NoArchiveExtension : Extension() {
                 } else if (!isThread(this.channel)) {
                     "This command is only usable in a thread"
                 } else {
-                    "An unexpected error occurred"
+                    error
                 }
 
                 ephemeralFollowUp {
@@ -134,9 +134,5 @@ class NoArchiveExtension : Extension() {
         }
     }
 
-    private fun isThread(channel: MessageChannel): Boolean {
-        return channel.type == ChannelType.PrivateThread
-                || channel.type == ChannelType.PublicGuildThread
-                || channel.type == ChannelType.PublicNewsThread
-    }
+    private fun isThread(channel: MessageChannel): Boolean = channel.type == ChannelType.PrivateThread || channel.type == ChannelType.PublicGuildThread || channel.type == ChannelType.PublicNewsThread
 }
