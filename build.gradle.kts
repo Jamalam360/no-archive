@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.jamalam360"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     maven {
@@ -30,7 +30,7 @@ dependencies {
     implementation(libs.groovy)
     implementation(libs.logback)
     implementation(libs.logging)
-    implementation("org.litote.kmongo:kmongo:4.3.0")
+    implementation(libs.kmongo)
 }
 
 application {
@@ -66,4 +66,5 @@ java {
 detekt {
     buildUponDefaultConfig = true
     config = rootProject.files("detekt.yml")
+    autoCorrect = true
 }

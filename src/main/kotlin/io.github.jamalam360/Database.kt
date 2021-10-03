@@ -20,13 +20,9 @@ class Database {
         threads.deleteOne(idFilter(id))
     }
 
-    fun hasThread(id: Snowflake): Boolean {
-        return threads.findOne(idFilter(id)) != null
-    }
+    fun hasThread(id: Snowflake): Boolean = threads.findOne(idFilter(id)) != null
 
-    fun getServerConfig(id: Snowflake): ServerConfig? {
-        return serverConfigs.findOne(idFilter(id))
-    }
+    fun getServerConfig(id: Snowflake): ServerConfig? = serverConfigs.findOne(idFilter(id))
 
     fun createServerConfig(id: Snowflake) {
         serverConfigs.insertOne(ServerConfig(id.value, false))
@@ -36,13 +32,9 @@ class Database {
         serverConfigs.replaceOne(idFilter(id), ServerConfig(id.value, autoNoArchive))
     }
 
-    fun hasServerConfig(id: Snowflake): Boolean {
-        return serverConfigs.findOne(idFilter(id)) != null
-    }
+    fun hasServerConfig(id: Snowflake): Boolean = serverConfigs.findOne(idFilter(id)) != null
 
-    private fun idFilter(id: Snowflake): String {
-        return "{\"id\" : ${id.value}}"
-    }
+    private fun idFilter(id: Snowflake): String = "{\"id\" : ${id.value}}"
 }
 
 data class NoArchiveThread(val id: Long)

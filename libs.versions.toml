@@ -6,6 +6,7 @@ groovy = "3.0.8"
 kord-extensions = "1.4.4-RC4"
 logging = "2.0.10"
 logback = "1.2.5"
+kmongo = "4.3.0"
 
 [libraries]
 detekt = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
@@ -14,3 +15,4 @@ kord-extensions = { module = "com.kotlindiscord.kord.extensions:kord-extensions"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logging = { module = "io.github.microutils:kotlin-logging", version.ref = "logging" }
+kmongo = { module = "org.litote.kmongo:kmongo", version.ref = "kmongo" }
